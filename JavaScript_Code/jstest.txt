@@ -1,0 +1,84 @@
+/** File: jstest.js
+    Author: Rory Abraham
+    Date: 2/4/19
+ **/
+
+// a function to sum all elements in an array (assumes all elements are numerical)
+let sum = function(array){
+    let sum = array[0];
+    for(let i=1; i < array.length; i++){
+        sum += array[i];
+    }
+    return sum;
+};
+
+// a function to take the difference of all elements in an array (assumes all elements are numerical)
+let diff = function(array){
+    let diff = array[0];
+    for(let i=1; i < array.length; i++){
+        diff -= array[i];
+    }
+    return diff;
+};
+
+// a function to take the product of all elements in an array (assumes all elements are numerical)
+let product = function(array){
+    let product = array[0];
+    for(let i=1; i < array.length; i++){
+        product *= array[i];
+    }
+    return product;
+};
+
+// a function to take the quotient of all elements in an array (assumes all elements are numerical)
+let quotient = function(array){
+    let quotient = array[0];
+    for(let i=1; i < array.length; i++){
+        quotient /= array[i];
+    }
+    return quotient;
+};
+
+// a mapping from the string literals (add|subtract|multiply|divide) to their corresponding functions
+const operationsMap = {
+    "add": sum,
+    "subtract": diff,
+    "multiply": product,
+    "divide": quotient
+};
+
+// This function is used only to validate the arguments called to the doMath function.
+// It contains conditionals solely for the purpose of error handling
+// returns true if the operator is one of (+,-,*,/) and operands are all numeric
+function validateParams(operator, operands){
+    if(operator !== "add" && operator !== "subtract" && operator !== "multiply" && operator !== "divide"){
+        console.log("Error: Invalid operator type!");
+        return false;
+    }
+
+    for(let i=0; i < operands.length; i++) {
+        if(typeof operands[i] !== 'number'){
+            console.log("Error: Operand is not a number!");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Our main function of interest!
+// operator should be one of the following string literals: "add", "subtract", "multiply", "divide"
+// params should be an array of numerical values
+module.exports.doMath = function(operator, params){
+    // get arguments 1-n into an array
+    let operands = [];
+    for(let i=1; i < arguments.length; i++) {
+        operands.push(arguments[i]);
+    }
+
+    // THIS CONDITIONAL IS USED SOLELY FOR INPUT ERROR HANDLING
+    if(validateParams(operator, operands)){
+        return operationsMap[operator](operands);
+    }
+};
+
